@@ -1,0 +1,69 @@
+Return-Path: <kofilolx@mail.com>
+Received: from mta.knust.edu.gh (LHLO mta.knust.edu.gh) (10.60.1.207) by
+ mailbox.knust.edu.gh with LMTP; Thu, 11 Jan 2024 19:18:04 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by mta.knust.edu.gh (Postfix) with ESMTP id C5B2436AE36
+	for <nss2022_emma@knust.edu.gh>; Thu, 11 Jan 2024 19:18:04 +0000 (UTC)
+X-Virus-Scanned: amavis at mta.knust.edu.gh
+X-Spam-Flag: NO
+X-Spam-Score: 0.362
+X-Spam-Level:
+X-Spam-Status: No, score=0.362 required=6 tests=[DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DMARC_PASS_NONE=-0.6, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ MIME_HTML_ONLY=0.1, MISSING_SUBJECT=1.767, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, TVD_SPACE_RATIO=0.001, T_SCC_BODY_TEXT_LINE=-0.01]
+ autolearn=disabled
+Authentication-Results: mta.knust.edu.gh (amavis); dkim=pass (2048-bit key)
+ header.d=mail.com
+Received: from mta.knust.edu.gh ([127.0.0.1])
+ by localhost (mta.knust.edu.gh [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id cA_y80SI5O3A for <nss2022_emma@knust.edu.gh>;
+ Thu, 11 Jan 2024 19:18:02 +0000 (UTC)
+Received: from mout.gmx.com (mout.gmx.com [74.208.4.200])
+	by mta.knust.edu.gh (Postfix) with ESMTPS id 498BF36ADD3
+	for <nss2022_emma@knust.edu.gh>; Thu, 11 Jan 2024 19:18:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.com;
+	s=s1089575; t=1705000678; x=1705605478; i=kofilolx@mail.com;
+	bh=nrQP51D1o72uqxhXstr++XtrX1+vRgdDtoRs4WRYyyI=;
+	h=X-UI-Sender-Class:From:To:Date;
+	b=JKf02JFGhxEzZV0loIdAVAMB5/o63HGOyaaIg71XFgR4gJglXd04qyqAZBhLjYKd
+	 1EHG/FGnt/mG0q1++Nm72k7u6T4Pu1Z+5oRs8qgdDWE5ktJ1lYR6MvJm4EZ3uUu90
+	 G3LTyj2WGL8zn4+qEk5S6Q+8ndFN6QfF4ahYIoIrpRCc/kHDsxekwh3mNLnD8vT9e
+	 zXWxgwjZkO64kOaVN0/PnAVAJAMGvZ7QOEPYUO0pMqW/9KjkZVCsbhX7pue1zOLbk
+	 4TLSbyk6CPBt6MS5h30T4L/7U26d4TfmbBtxWJlmdZqLWxlXQ5y2kwLFJKPdLRWHO
+	 m9g4pDbKgjS21QHoyA==
+X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
+Received: from [129.122.30.19] ([129.122.30.19]) by web-mail.mail.com
+ (3c-app-mailcom-lxa05.server.lan [10.76.45.6]) (via HTTP); Thu, 11 Jan 2024
+ 20:12:49 +0100
+MIME-Version: 1.0
+Message-ID: <trinity-d0a1d4e3-fec4-46a9-8eda-33ed32241ed8-1705000369826@3c-app-mailcom-lxa05>
+From: kofi lolx <kofilolx@mail.com>
+To: nss2022_emma@knust.edu.gh
+Content-Type: text/html; charset=UTF-8
+Date: Thu, 11 Jan 2024 20:12:49 +0100
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:XMKmWnXYADDvZz3mVDpRc5PLweZ2QBcOKpa5ezNMwbYTBYXnGoO30FTYnGiw/cS8FT4D2
+ MvFEwjL41MSRIU2IXVDbdUeshEGB5ms29hNjYxn1CnjdMNwRVPgxUvjFc15DgJxKsIr1/Fq0YDLH
+ ZJoRtZw3Cy2kBgu1MuDMySbtlB8v/8dMvLPg97SF300K+PNhMejZpgK36eeIpjaRlovoeVLtzAv7
+ ZPsKHrPiIoUL9hIsOKo0UFiD2BY3cKHUaYRtoePH32ua3wgB4a5ED5SBADfa5hGU5P6RWaFF0DiO
+ rs=
+UI-OutboundReport: notjunk:1;M01:P0:4gh0dgInhYI=;qxiq13mONmbfLBN/ixrlTmkfEd/
+ 2ULrNczdgruQD8JJKYtMkVsufMr7Bq7/PAGokI28Z+JnJG8+C4aydZQTaEIqT7DqLAKi/5dIG
+ yvRVEwqMMhC67PIOCSc6MfxoJICpPjjBpj8D1Z4Ugzf0xkQiELct9u75btoFrcvxjYP0yiWC0
+ +m/QbduyATj0Opytqw6QsfXzJjxwyFhl37onWYtihbzNmSxj1R+Ytt+8tkOurxamQOZuIJChr
+ Jf1DjuFC1YJRWkyxbXknYHM0KHaeHC5rfL+NdO4OJ5RZCHSebMNT8yV7itKz5ohHFTLK2b4Tz
+ /EEioz0bR5QkcmWCsalmnUNR5yQCUD2LFTB2k2Zo/ybO4JlUkEslp0rAr/2RhwBwWVtxNMR2E
+ PA8pBfq6GaYkqzWr3LblhoWPVVe3lwvLVotK/EMbn/gdXL1n2XXknzcBDLb3Oz2siAKeRD5FZ
+ hhsj14PCDcl67azyf88GAh1nEUEzxPFpT3ii7nWfdegvAZzpCMiZZe6e1gQ+KXsxLrtnKYZSN
+ lNC/3laEUiJ6Ie7I7pp8FhNIN5BhLyprl59zMwIA6/Xrp7CDdiL055OoqcIrEx4Br6zHenPMq
+ q89/nt/mlrmd5wstUw5iZzHcoveOglD9zBwF7eGSuJFor7ZgBIHWLSqY2Oq3JNOXvA0jVw6bE
+ 5XYJmeWF8roXVJ3CCyNAOhRrTy6pZQTuHQ38o37+ikrBRSwmLuJjT7Wh/6eWPj25R3ksCxq4I
+ j+ol/T3g3ljZsDJmdL1MyBaAf7BA0X9SnmRvxlqnwYTJhgOkoMH2nExeKY4Govc/qgfe9US1w
+ YJqKd6NndOrw33aZL6fFgeAg==
+
+<html><head></head><body><div style="font-family: Verdana;font-size: 12.0px;"><div>ncjgmvmn gfjhmvbmnghk</div></div></body></html>

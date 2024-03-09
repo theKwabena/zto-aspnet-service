@@ -1,31 +1,21 @@
 services:
   migrate-client:
-    image: ${ASPNET_APP_IMAGE}
-#    build:
-#      context: .
-#      dockerfile: ./Dockerfiles/prod.Dockerfile
+    image: dreg.knust.edu.gh/mi-asp:0.0.1
     container_name: migrate-client
-#    env_file:
-#      - ./.env/.local/.app.env
     networks:
       - migrate-network
     ports:
       - 8001:80
       - 8443:443
     volumes:
-      #      - .:/app
-      - /mnt/certificates/:/https
-      - /mnt/mailboxes:/home/mailboxes/
+      - /mnt/migrate/certificates/:/https
+      - /mnt/migrate/mailboxes:/home/mailboxes/
     dns:
       - 8.8.8.8
     depends_on:
       - uploader-redis
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_CERT_PASSWORD}
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/MigrateClient.pfx
-      - REDIS_DATABASE_URL=${REDIS_DATABASE_URL}
+    env_file:
+      - .env
   
   uploader-redis:
     image: redis

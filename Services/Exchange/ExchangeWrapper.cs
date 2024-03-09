@@ -22,9 +22,9 @@ namespace MigrateClient.Services.Exchange
 
         private readonly IQueueService _queue;
         private readonly IConfidentialClientApplication tokenAcquisition = ConfidentialClientApplicationBuilder
-                   .Create("d8f4eb75-d1d6-455b-9bbb-5cfa1d04f71b")
-                   .WithClientSecret("vRR8Q~1f5ci6aP_eVcs2OvH0f7jylShM2miCwbS1")
-                   .WithTenantId("10ceb3de-b351-4530-996d-e8ab69c634d1")
+                   .Create(Environment.GetEnvironmentVariable("OFFICE_365_CLIENT_ID"))
+                   .WithClientSecret(Environment.GetEnvironmentVariable("OFFICE_365_CLIENT_SECRET"))
+                   .WithTenantId(Environment.GetEnvironmentVariable("OFFICE_365_TENANT_ID"))
                    .Build();
         private AuthenticationResult authResult;
         public SysTask Initialization { get; private set; }
@@ -89,7 +89,7 @@ namespace MigrateClient.Services.Exchange
                         await using (FileStream fs = new(emlFile, FileMode.Open, FileAccess.Read))
                         {
                             // Read the content of the email file
-                            byte[] bytes = File.ReadAllBytes(emlFile);
+                            byte[] bytes = await File.ReadAllBytesAsync(emlFile);
 
                             // Set the contents of the .eml file to the MimeContent property.
                             email.MimeContent = new MimeContent("UTF-8", bytes);
@@ -176,7 +176,7 @@ namespace MigrateClient.Services.Exchange
 
         private async SysTask Error(Exception ex, string username)
         {
-            await _queue.UpdateJobStatusAsync(username, "Failed", ex.Message);
+            await _queue.UpdateJobStatusAsync(username, "FAILURE", ex.Message);
             _logger.LogError($"An error occured {ex}");
         }
         #endregion

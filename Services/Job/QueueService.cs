@@ -10,7 +10,6 @@ public class QueueService : IQueueService
 {
     private readonly IDatabase _redisDatabase;
     private readonly ILogger<QueueService> _logger;
-
     public QueueService(IConnectionMultiplexer multiplexer, ILogger<QueueService> logger)
     {
         _redisDatabase = multiplexer.GetDatabase();
@@ -67,6 +66,7 @@ public class QueueService : IQueueService
             return null;
         }
         var redisJob = JsonSerializer.Deserialize<JobModel?>(job!);
+        await UpdateJobStatusAsync(redisJob!.Username, "in_Progress", "Job currently in progress");
         return redisJob;
     }
    
@@ -85,7 +85,30 @@ public class QueueService : IQueueService
     {
         await _redisDatabase.ListRemoveAsync("jobQueue", JsonSerializer.Serialize(job));
         await _redisDatabase.KeyDeleteAsync(job.JobId);
-        await UpdateJobStatusAsync(job.Username, "Completed");
+        await UpdateJobStatusAsync(job.Username, "SUCCESS");
+    }
+    
+    // These methods can be made more efficient because they do almost the same thing
+    public async Task<RedisValue?> GetJobStatus(string username)
+    {
+        var job = await _redisDatabase.HashGetAsync(username, "status");
+        if (!job.HasValue)
+        {
+            return null!;
+        }
+        
+        return job;
+    }
+
+    public async Task<Boolean> JobExists(string username)
+    {
+        var job = await _redisDatabase.HashGetAsync(username, "status");
+        if (!job.HasValue)
+        {
+            return false;
+        }
+        
+        return true!;
     }
     
 }

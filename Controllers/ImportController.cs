@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using MigrateClient.Data.DTOs;
 using MigrateClient.Data.Models;
+using MigrateClient.Extensions;
 using MigrateClient.Interfaces;
 using MigrateClient.Interfaces.Exchange;
 using StackExchange.Redis;
@@ -8,7 +10,8 @@ using StackExchange.Redis;
 
 namespace MigrateClient.Controllers
 {
-    [Route("api/Migrate")]
+    [ApiVersion(1)]
+    [Route("api/v{v:apiVersion}/migrate")]
     [ApiController]
     public class ImportController : ControllerBase
     {
@@ -16,15 +19,19 @@ namespace MigrateClient.Controllers
         public static readonly string _folderPath = "/home/mailboxes/mailbox-extracts/";
         private readonly IQueueService _redisQueue;
         private readonly IDatabase _redisDatabase;
-        public ImportController(IExchangeWrapper ewsClient, IQueueService queue, IConnectionMultiplexer multiplexer) //IBackgroundTaskQueue taskQueue)
+        private readonly ILogger<ImportController> _logger;
+        public ImportController(
+            IExchangeWrapper ewsClient, IQueueService queue, IConnectionMultiplexer multiplexer,
+            ILogger<ImportController> logger) //IBackgroundTaskQueue taskQueue)
         {
             _ewsClient = ewsClient;
             // _backgroundTaskQueue = taskQueue;
             _redisQueue = queue;
             _redisDatabase = multiplexer.GetDatabase();
+            _logger = logger;
         }
         
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> GetExportedMailboxes()
         {
             try
@@ -61,16 +68,7 @@ namespace MigrateClient.Controllers
         }
 
 
-        [HttpGet("All Tasks")]
-        public async Task<List<JobModel>> Jobs()
-        {
-            return await _redisQueue.GetJobsAsync();
-        }
-        [HttpGet("Tasks in Queue")]
-        public async Task<List<JobModel>> JobsInQueue()
-        {
-            return await _redisQueue.GetJobsInQueueAsync();
-        }
+    
             
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CredentialsDto user)
@@ -81,14 +79,22 @@ namespace MigrateClient.Controllers
                 if (job.HasValue)
                 {
                     
-                    return BadRequest(
-                        $"User with id {user.username} done with migration. Last status is ${job.ToString()}." +
-                        $"contact admin for extra assistance."
-                        );
+                    return Ok(new
+                    {
+                        username = user.username,
+                        status = job.ToString()
+                    });
                 }
                 await  _redisQueue.EnqueueJobAsync(new JobModel()
                 {
                     Username = user.username,
+                });
+                
+                return Ok(new
+                {
+                    
+                    username = user.username,
+                    status = job.ToString()
                 });
             }
             else
@@ -96,8 +102,11 @@ namespace MigrateClient.Controllers
                 return NotFound("User data not found. Please contact admin if issue persists.");
             }
 
-            return Ok();
+            
         }
+
+
+        
     }
 
         
